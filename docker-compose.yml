@@ -2,14 +2,13 @@ networks:
   owms:
 
 services:
-
   ####################################################
   ## RabbitMQ Message Broker (UI at Port 15673)
   ####################################################
   rabbitmq:
     image: openwms/rabbitmq:latest
     container_name: rabbitmq
-    hostname: 'mosque'
+    hostname: "mosque"
     ports:
       - "15672:15672"
       - "5672:5672"
@@ -117,6 +116,8 @@ services:
     image: "openwms/org.openwms.common.service:3.0.0"
     container_name: common-service
     restart: always
+    ports:
+      - "8120:8120"
     environment:
       spring.profiles.active: "ASYNCHRONOUS,DISTRIBUTED,ZILE"
       spring.rabbitmq.host: rabbitmq
@@ -136,6 +137,8 @@ services:
     image: "openwms/org.openwms.tms.transportation:latest"
     container_name: tms-service
     restart: always
+    ports:
+      - "8131:8131"
     environment:
       spring.profiles.active: "ASYNCHRONOUS,DISTRIBUTED,ZILE"
       spring.rabbitmq.host: rabbitmq
@@ -155,6 +158,8 @@ services:
     image: "openwms/org.openwms.tms.routing:latest"
     container_name: routing-service
     restart: always
+    ports:
+      - "8130:8130"
     environment:
       spring.profiles.active: "ASYNCHRONOUS,DISTRIBUTED,CAMUNDA,ZILE"
       spring.rabbitmq.host: rabbitmq
