@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: boot-admin
+  security:
+    user:
+      name: admin
+      password: admin
+
+server:
+  port: 8090
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://srv:8761/eureka/
+  instance:
+    hostname: boot-admin
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

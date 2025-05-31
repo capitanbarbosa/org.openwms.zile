@@ -124,6 +124,11 @@ services:
       owms.eureka.url: http://user:sa@srv:8761
       owms.srv.hostname: common-service
       owms.tracing.url: http://jaeger:4317
+      spring.boot.admin.client.url: "http://boot-admin:8090"
+      spring.boot.admin.client.username: "admin"
+      spring.boot.admin.client.password: "admin"
+      management.endpoints.web.exposure.include: "*"
+      management.endpoint.health.show-details: "always"
     volumes:
       - ./:/openwms
       - /etc/localtime:/etc/localtime:ro
@@ -145,6 +150,11 @@ services:
       owms.eureka.url: http://user:sa@srv:8761
       owms.srv.hostname: tms-service
       owms.tracing.url: http://jaeger:4317
+      spring.boot.admin.client.url: "http://boot-admin:8090"
+      spring.boot.admin.client.username: "admin"
+      spring.boot.admin.client.password: "admin"
+      management.endpoints.web.exposure.include: "*"
+      management.endpoint.health.show-details: "always"
     volumes:
       - ./:/openwms
       - /etc/localtime:/etc/localtime:ro
@@ -166,8 +176,31 @@ services:
       owms.eureka.url: http://user:sa@srv:8761
       owms.srv.hostname: routing-service
       owms.tracing.url: http://jaeger:4317
+      spring.boot.admin.client.url: "http://boot-admin:8090"
+      spring.boot.admin.client.username: "admin"
+      spring.boot.admin.client.password: "admin"
+      management.endpoints.web.exposure.include: "*"
+      management.endpoint.health.show-details: "always"
     volumes:
       - ./:/openwms
       - /etc/localtime:/etc/localtime:ro
+    networks:
+      - owms
+
+  ####################################################
+  ## Spring Boot Admin Server (UI at Port 8090)
+  ####################################################
+  boot-admin:
+    build: ./boot-admin
+    ports:
+      - "8090:8090"
+    environment:
+      - SPRING_BOOT_ADMIN_TITLE=Colombian Warehouse Monitor
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://srv:8761/eureka/
+      - SPRING_SECURITY_USER_NAME=admin
+      - SPRING_SECURITY_USER_PASSWORD=admin
+      - SPRING_BOOT_ADMIN_CONTEXT_PATH=/
+      - MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE=*
+      - MANAGEMENT_ENDPOINT_HEALTH_SHOW_DETAILS=always
     networks:
       - owms
